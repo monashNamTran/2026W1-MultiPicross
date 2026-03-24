@@ -12,10 +12,22 @@ app.route("/todos", todos);
 
 await migrate(db, { migrationsFolder: "./drizzle" });
 
+// serve(
+//   {
+//     fetch: app.fetch,
+//     port: 3000,
+//   },
+//   (info) => {
+//     console.log(`Server is running on http://localhost:${info.port}`);
+//   },
+// );
+
+// api/src/index.ts
 serve(
   {
     fetch: app.fetch,
     port: 3000,
+    hostname: "0.0.0.0", // <--- ADD THIS LINE
   },
   (info) => {
     console.log(`Server is running on http://localhost:${info.port}`);

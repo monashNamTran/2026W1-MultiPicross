@@ -12,12 +12,15 @@ export class MyRoom extends Room {
   // For example, the `yourMessageType` handler will be called when client sends a message
   // with type "yourMessageType".
   // You can define the structure of the `message` parameter in ./schema/MyRoomState.ts using @type decorators.
-  messages = {
-    yourMessageType: (client: Client, message: any) => {
-      /**
-       * Handle "yourMessageType" message.
-       */
-      console.log(client.sessionId, "sent a message:", message);
+messages = {
+    increment: (client: Client, message: any) => {
+      // Access the state directly to change it; Colyseus handles the broadcast
+      this.state.count += (message.amount || 1); //
+      console.log(`Incremented by ${client.sessionId}. New count: ${this.state.count}`);
+    },
+    decrement: (client: Client, message: any) => {
+      this.state.count -= (message.amount || 1); //
+      console.log(`Decremented by ${client.sessionId}. New count: ${this.state.count}`);
     },
   };
 
@@ -25,6 +28,7 @@ export class MyRoom extends Room {
     /**
      * Called when a new room is created.
      */
+    console.log("Counter Room Created!");
   }
 
   onJoin(client: Client, options: any) {
